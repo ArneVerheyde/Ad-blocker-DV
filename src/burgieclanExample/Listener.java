@@ -1,4 +1,4 @@
-package Incomplete;
+package burgieclanExample;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.StringTokenizer;

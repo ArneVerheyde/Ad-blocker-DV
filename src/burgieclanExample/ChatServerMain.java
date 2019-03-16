@@ -1,4 +1,4 @@
-package Incomplete;
+package burgieclanExample;
 /**
  * The ChatServerMain class will start the chatserver
  */
