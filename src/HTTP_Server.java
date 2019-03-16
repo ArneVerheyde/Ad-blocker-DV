@@ -1,5 +1,7 @@
 
-	import java.net.*;
+import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import knockKnockExample.KnockKnockProtocol;
 
@@ -47,5 +49,27 @@ public class HTTP_Server {
 	        }
 	    }
 	
+	
+	String getServerTime() {
+	    Calendar calendar = Calendar.getInstance();
+	    SimpleDateFormat dateFormat = new SimpleDateFormat(
+	        "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+	    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+	    return dateFormat.format(calendar.getTime());
 	}
+	
+	String getContentType(String type, String subType) {
+		return type + '/' + subType;
+	}
+	
+	String getContentLength() {
+		return null;
+	}
+	
+	
+	
+}
+
+
+
 
