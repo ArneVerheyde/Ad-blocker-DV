@@ -35,6 +35,11 @@ public class HTTP_Response {
 	String getChunckedEncoding() {
 		return null;
 	}
+	
+	String getStatusLine() {
+		return null;
+		
+	}
     
 
 	

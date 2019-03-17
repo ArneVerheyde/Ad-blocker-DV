@@ -1,5 +1,7 @@
 import java.io.*; 
 import java.net.*;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class ChatClient {
@@ -54,6 +56,48 @@ public class ChatClient {
             System.exit(1);
         }
     }
+	
+	public boolean executeCommand() throws IOException {
+		ZonedDateTime lastmodified = getFileLastModified(getPath());
+		sendRequest(lastmodified);
+		return processResponse();
+	}
+	
+	private ZonedDateTime getFileLastModified(String path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private boolean processResponse() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private void sendRequest(ZonedDateTime modifiedSince) {
+		PrintWriter writer = new PrintWriter(getWriter());
+		writer.print("GET " + getPath() + " HTTP/1.1\r\n");
+		writer.print("Host: " + getHost() + "\r\n");
+		if (modifiedSince != null)
+			writer.print("If-Modified-Since: " + modifiedSince.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+		writer.print("\r\n");
+		writer.flush();
+		
+	}
+
+	private String getHost() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String getPath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Writer getWriter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 		
 
 }
