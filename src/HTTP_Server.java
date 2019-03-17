@@ -3,7 +3,6 @@ import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import knockKnockExample.KnockKnockProtocol;
 
 import java.io.*;
 
@@ -11,60 +10,54 @@ public class HTTP_Server {
 	
 	public static void main(String[] args) throws IOException {
 	       
-	        
+		
+	    // have to create HTTP_Server instance with one argument    
 		if (args.length != 1) {
-			System.err.println("Usage: java KnockKnockServer <port number>");
+			System.err.println("Usage: java HTTP_Server <port number>");
 	        System.exit(1);
 	       }
+		
+		// create serverSocket with given portNumber
+		int portNumber = Integer.parseInt(args[0]);
+        ServerSocket serverSocket = new ServerSocket(portNumber);
 
-	       int portNumber = Integer.parseInt(args[0]);
-
-	        
-	       try ( 
-	            ServerSocket serverSocket = new ServerSocket(portNumber);
-	            Socket clientSocket = serverSocket.accept();
-	            PrintWriter out =
-	                new PrintWriter(clientSocket.getOutputStream(), true);
-	            BufferedReader in = new BufferedReader(
-	                new InputStreamReader(clientSocket.getInputStream()));
-	        ) {
-	        
-	            String inputLine, outputLine;
-	            
-	            // Initiate conversation with client
-	            KnockKnockProtocol kkp = new KnockKnockProtocol();
-	            outputLine = kkp.processInput(null);
-	            out.println(outputLine);
-
-	            while ((inputLine = in.readLine()) != null) {
-	                outputLine = kkp.processInput(inputLine);
-	                out.println(outputLine);
-	                if (outputLine.equals("Bye."))
-	                    break;
-	            }
-	        } catch (IOException e) {
-	            System.out.println("Exception caught when trying to listen on port "
-	                + portNumber + " or listening for a connection");
-	            System.out.println(e.getMessage());
-	        }
+        // start accepting connections
+	    while (true) {
+		     try ( 
+		          Socket clientSocket = serverSocket.accept();
+		          PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);	            
+		    	
+		    		 BufferedReader in = new BufferedReader(
+		                new InputStreamReader(clientSocket.getInputStream()));
+		        ) {
+		        
+		            String inputLine, outputLine;
+		            
+		            // Initiate conversation with client
+		            HTTP_Response response = new HTTP_Response();
+		            
+		            inputLine = in.readLine();
+		            while (!inputLine.isEmpty()) {
+		            	outputLine = response.processInput(inputLine);
+		            	out.println(outputLine);
+		            	inputLine = in.readLine();     	
+		            }
+ 
+	
+	
+		        } catch (IOException e) {
+		            System.out.println("Exception caught when trying to listen on port "
+		                + portNumber + " or listening for a connection");
+		            System.out.println(e.getMessage());
+		        }
+		       
+	       }
 	    }
 	
 	
-	String getServerTime() {
-	    Calendar calendar = Calendar.getInstance();
-	    SimpleDateFormat dateFormat = new SimpleDateFormat(
-	        "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
-	    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-	    return dateFormat.format(calendar.getTime());
-	}
 	
-	String getContentType(String type, String subType) {
-		return type + '/' + subType;
-	}
 	
-	String getContentLength() {
-		return null;
-	}
+
 	
 	
 	
